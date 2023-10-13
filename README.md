@@ -6,7 +6,7 @@ This is one "script" for setting up containers and out of this create replicatio
 
 I decided to use one logical created by myself for the challenge. I know the pgslice but I prefered to create it by my own.
 
-Instructions:
+**Instructions:**
 
 Docker compose will create the base of all:
  - the two containers running postgresql
@@ -27,22 +27,22 @@ There are two for executing it manual and via shell script. For both you need to
 
 Open 3 terminals.
 In terminal 1 execute:
-    1 - docker-compose up -d
+1. docker-compose up -d
 After the return of the command execute and leave it open for keep writing to table or execute it on background by adding & at the end:
-    2 - PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 -c"CALL insert_sample_data();"
+2. PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 -c"CALL insert_sample_data();"
 In terminal 2:
-    3 - PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 < ./scripts/master_preparation.sql
-    4 - PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5433 < ./scripts/replica_preparation.sql
-    5 - PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 < ./scripts/moving_old_data.sql
-    5 - PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 < ./scripts/migration.sql
-    5 - PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5433 < ./scripts/migration.sql
-    5 - PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 < ./scripts/cleaning.sql
-    5 - PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5433 < ./scripts/cleaning.sql
+3. PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 < ./scripts/master_preparation.sql
+4. PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5433 < ./scripts/replica_preparation.sql
+5. PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 < ./scripts/moving_old_data.sql
+6. PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 < ./scripts/migration.sql
+7. PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5433 < ./scripts/migration.sql
+8. PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 < ./scripts/cleaning.sql
+9. PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5433 < ./scripts/cleaning.sql
 
 In terminal 3:
 You can use to test the migration and monitor if the data is still coming without error or stopping.
 Samples of monitoring below.
-PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5433 -c "select count(*) AS "PG_REPLICA" from orders;" && PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 -c "select count(*) AS "PG_MASTER" from orders;"
+`PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5433 -c "select count(*) AS "PG_REPLICA" from orders;" && PGPASSWORD=postgres psql -Upostgres -hlocalhost -dtestdb -p5432 -c "select count(*) AS "PG_MASTER" from orders;"`
 
 -- Via shell script
 
