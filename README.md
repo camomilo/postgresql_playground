@@ -1,3 +1,5 @@
+# Setting up Logical Replication
+
 Hello,
 
 This is one "script" for setting up containers and out of this create replication and partitioning on flight with near zero downtime.
