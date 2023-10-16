@@ -3,6 +3,7 @@ services:
   pg_master:
     image: postgres:latest
     container_name: pg_master
+    user: postgres
     ports:
       - 5432:5432
     environment:
@@ -14,7 +15,7 @@ services:
       -c wal_level=logical
       -c max_wal_senders=10 
       -c max_replication_slots=10 
-      -c listen_addresses=0.0.0.0
+      -c listen_addresses="*"
     volumes:
       - ./scripts/create_master.sql:/docker-entrypoint-initdb.d/create_master.sql
       - ./scripts/procedure.sql:/docker-entrypoint-initdb.d/procedure.sql
@@ -24,6 +25,7 @@ services:
   pg_replica:
     image: postgres:latest
     container_name: pg_replica
+    user: postgres
     ports:
       - 5433:5432
     depends_on:
@@ -35,6 +37,6 @@ services:
       POSTGRES_PASSWORD: postgres
     command: |
       postgres 
-      -c listen_addresses=0.0.0.0
+      -c listen_addresses="*"
     volumes:
       - ./scripts/create_replica.sql:/docker-entrypoint-initdb.d/create_replica.sql
